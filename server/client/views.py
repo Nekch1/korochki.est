@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from .forms import RegisterForm, LoginForm, ApplicationCreateForm, RewiewForm
 from .models import Application
 
@@ -61,11 +62,45 @@ def application(request):
         form = RewiewForm(request.POST, instance=course_app)
         if form.is_valid():
             form.save()
-            return redirect('my_requests')
+            return redirect('application')
     else:
         form = None
 
     return render(request, 'application.html', {
-        'requests': user_app,
+        'applications': user_app,
         'form': form
+    })
+
+
+@login_required
+def admin_panel(request):
+    if not request.user.is_superuser:
+        return redirect('home')  # обычный пользователь не может заходить
+
+    # Фильтрация по статусу через GET-параметр
+    status_filter = request.GET.get('status', '')
+    if status_filter:
+        applications = Application.objects.filter(status=status_filter).order_by('-created_at')
+    else:
+        applications = Application.objects.all().order_by('-created_at')
+
+    # Пагинация
+    paginator = Paginator(applications, 10)  # 10 заявок на страницу
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Смена статуса
+    if request.method == 'POST':
+        app_id = request.POST.get('app_id')
+        new_status = request.POST.get('status')
+        app = get_object_or_404(Application, id=app_id)
+        if new_status in dict(Application.STATUS_CHOICES).keys():
+            app.status = new_status
+            app.save()
+        return redirect(request.path_info)  # обновляем страницу
+
+    return render(request, 'admin_panel.html', {
+        'page_obj': page_obj,
+        'status_filter': status_filter,
+        'status_choices': Application.STATUS_CHOICES
     })

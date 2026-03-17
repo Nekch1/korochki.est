@@ -22,7 +22,7 @@
         <div class="nav-right">
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                    <a href="{% url 'home' %}" class="nav-link">Админ</a>
+                    <a href="{% url 'admin_panel' %}" class="nav-link">Админ</a>
                 {% endif %}
                 <a href="{% url 'application_create' %}" class="nav-link">Подать заявку</a>
                 <a href="{% url 'application' %}" class="nav-link">Мои заявки</a>

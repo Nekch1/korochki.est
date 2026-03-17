@@ -10,6 +10,11 @@ class CustomUser(AbstractUser):
 
 
 class Application(models.Model):
+    COURSE_CHOICE = [
+        ('1', 'Основы алгоритмизации и программирования'),
+        ('2', 'Основы веб-дизайна'),
+        ('3', 'Основы проектирования баз данных'),
+    ] 
     PAYMENT_CHOICES = [
         ('cash', 'Наличные'),
         ('phone', 'Перевод по номеру телефона'),
@@ -22,11 +27,12 @@ class Application(models.Model):
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    course_name = models.CharField(max_length=255)
+    course_name = models.CharField(max_length=255, choices=COURSE_CHOICE)
     start_date = models.DateField()
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
     rewiew = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.course_name} - {self.user.username}"

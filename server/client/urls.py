@@ -8,4 +8,5 @@ urlpatterns = [
     path('logout/', views.logout_func, name='logout'),
     path('application-create/', views.application_create, name='application_create'),
     path('application/', views.application, name='application'),
+    path('admin-panel/', views.admin_panel, name='admin_panel'),
 ]

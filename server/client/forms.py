@@ -75,7 +75,7 @@ class ApplicationCreateForm(forms.ModelForm):
         model = Application
         fields = ('course_name', 'start_date', 'payment_method')
         widgets = {
-            'course_name': forms.TextInput(),
+            'course_name': forms.Select(),
             'payment_method': forms.Select(),
         }
 
