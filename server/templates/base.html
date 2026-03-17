@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header class="header">
+    <nav class="nav container">
+        <div class="nav-left">
+            <a href="{% url 'home' %}" class="logo">
+                <span>MySite</span>
+            </a>
+        </div>
+
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <a href="{% url 'home' %}" class="nav-link">Админ</a>
+                {% endif %}
+                <a href="{% url 'home' %}" class="nav-link">Подать заявку</a>
+                <a href="{% url 'home' %}" class="nav-link">Мои заявки</a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Выйти</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-primary btn-sm">Регистрация</a>
+                <a href="{% url 'home' %}" class="btn btn-primary btn-sm">Вход</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+<main class="main container">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

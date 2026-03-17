@@ -1,0 +1,174 @@
+/* =========================
+   🎯 Переменные (дизайн-система)
+========================= */
+:root {
+    --color-primary: #4f46e5;       /* основной фирменный цвет */
+    --color-primary-hover: #4338ca; /* hover для ВСЕХ кнопок */
+    --color-bg: #f4f6fb;
+    --color-white: #ffffff;
+    --color-text: #1f2937;
+    --color-muted: #6b7280;
+    --color-border: #e5e7eb;
+
+    --radius: 10px;
+    --transition: 0.2s ease;
+}
+
+/* =========================
+   🌍 База
+========================= */
+body {
+    background-color: var(--color-bg);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    margin: 0;
+    color: var(--color-text);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* =========================
+   🔝 Header
+========================= */
+.header {
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    padding: 15px 0;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
+/* =========================
+   🔗 Навигация
+========================= */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--color-muted);
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--color-primary);
+}
+
+/* =========================
+   🔘 КНОПКИ (единый стиль!)
+========================= */
+.btn {
+    border-radius: var(--radius);
+    padding: 8px 16px;
+    font-weight: 500;
+    border: none;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+/* Основная кнопка */
+.btn-primary {
+    color: var(--color-primary);
+    background: transparent;
+    border: 1px solid var(--color-primary);
+}
+
+/* ❗ ЕДИНЫЙ hover для ВСЕХ кнопок */
+.btn:hover {
+    background: var(--color-primary-hover);
+    color: #fff;
+    border-color: var(--color-primary-hover);
+}
+
+/* =========================
+   📦 Контент
+========================= */
+.main {
+    margin-top: 40px;
+}
+
+/* Карточка */
+.card-custom {
+    background: var(--color-white);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Заголовки */
+.page-title {
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+/* =========================
+   📝 Формы
+========================= */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    transition: var(--transition);
+}
+
+/* Фокус */
+input:focus, textarea:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+/* =========================
+   ⚠ Ошибки
+========================= */
+.errorlist {
+    color: red;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.carousel-item img{
+    height:600px !important;
+    object-fit: cover;
+}
+
+.carousel {
+    margin-top: 20px;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+    opacity: 0.7;
+}
