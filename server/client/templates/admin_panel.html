@@ -21,18 +21,14 @@
     {% for app in page_obj %}
     <div class="card-custom mb-3">
         <p><strong>Пользователь:</strong> {{ app.user.username }}</p>
-        <p><strong>Курс:</strong> {{ app.get_course_name_display }}</p>
+        <p><strong>Курс:</strong> {{ app.course_name }}</p>
         <p><strong>Дата начала:</strong> {{ app.start_date }}</p>
         <p><strong>Оплата:</strong> {{ app.get_payment_method_display }}</p>
         <p><strong>Статус:</strong> {{ app.get_status_display }}</p>
-        {% if app.rewiew %}
-            <p><strong>Отзыв:</strong> {{ app.rewiew }}</p>
-        {% endif %}
 
         <!-- Форма смены статуса -->
-        <form method="post" class="d-flex gap-2 mt-2">
+        <form method="post" action="{% url 'change_status' app.id %}" class="d-flex gap-2 mt-2">
             {% csrf_token %}
-            <input type="hidden" name="app_id" value="{{ app.id }}">
             <select name="status" class="form-control w-auto">
                 {% for key, label in status_choices %}
                     <option value="{{ key }}" {% if app.status == key %}selected{% endif %}>{{ label }}</option>
@@ -74,5 +70,5 @@
         </ul>
     </nav>
 
-</div>
+</div> 
 {% endblock %}

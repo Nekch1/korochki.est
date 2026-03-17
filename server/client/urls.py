@@ -9,4 +9,5 @@ urlpatterns = [
     path('application-create/', views.application_create, name='application_create'),
     path('application/', views.application, name='application'),
     path('admin-panel/', views.admin_panel, name='admin_panel'),
+    path('admin-panel/change-status/<int:app_id>/', views.change_status, name='change_status'),
 ]

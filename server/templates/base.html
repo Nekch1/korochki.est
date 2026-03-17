@@ -4,7 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>{% block title %} {% endblock %}</title>
+    <meta name="author" content="Корочки.есть">
+    <meta name="description" content="Платформа для подачи заявок на курсы и управления ими">
+    <meta name="keywords" content="курсы, обучение, заявки, Корочки.есть, образование">
+
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -15,7 +20,7 @@
     <nav class="nav container">
         <div class="nav-left">
             <a href="{% url 'home' %}" class="logo">
-                <span>MySite</span>
+                <span>Корочки.есть</span>
             </a>
         </div>
 

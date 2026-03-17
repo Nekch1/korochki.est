@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .forms import RegisterForm, LoginForm, ApplicationCreateForm, RewiewForm
 from .models import Application
+from django.http import HttpResponseForbidden
 
 def index_page(request):
     return render(request, 'index.html')
@@ -75,7 +76,7 @@ def application(request):
 @login_required
 def admin_panel(request):
     if not request.user.is_superuser:
-        return redirect('home')  # обычный пользователь не может заходить
+        return redirect('home') 
 
     # Фильтрация по статусу через GET-параметр
     status_filter = request.GET.get('status', '')
@@ -89,18 +90,23 @@ def admin_panel(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Смена статуса
-    if request.method == 'POST':
-        app_id = request.POST.get('app_id')
-        new_status = request.POST.get('status')
-        app = get_object_or_404(Application, id=app_id)
-        if new_status in dict(Application.STATUS_CHOICES).keys():
-            app.status = new_status
-            app.save()
-        return redirect(request.path_info)  # обновляем страницу
-
     return render(request, 'admin_panel.html', {
         'page_obj': page_obj,
         'status_filter': status_filter,
         'status_choices': Application.STATUS_CHOICES
     })
+
+
+@login_required
+def change_status(request, app_id):
+    if not request.user.is_superuser:
+        return redirect('home')
+
+    if request.method == 'POST':
+        app = get_object_or_404(Application, id=app_id)
+        new_status = request.POST.get('status')
+        if new_status in dict(Application.STATUS_CHOICES).keys():
+            app.status = new_status
+            app.save()
+
+    return redirect('admin_panel')
