@@ -2,4 +2,38 @@
 {% block title %} Авторизация {% endblock %}
 
 {% block content %}
+<div class="card-custom">
+    <h2 class="page-title">Авторизация</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label>Логин</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+
+        <div class="mb-3">
+            <label>Пароль</label>
+            {{ form.password }}
+            {{ form.password.errors }}
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="errorlist">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary w-100">
+            Войти
+        </button>
+        
+        <div class="text-center mt-4">
+            Еще не зарегистрированы? 
+            <a href="{% url 'register' %}">Регистрация</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

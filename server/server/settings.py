@@ -99,7 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTH_USER_MODEL = 'client.CustomUser'
+AUTH_USER_MODEL = 'client.CustomUser'
 
 
 # Internationalization
