@@ -21,7 +21,7 @@
     {% for app in page_obj %}
     <div class="card-custom mb-3">
         <p><strong>Пользователь:</strong> {{ app.user.username }}</p>
-        <p><strong>Курс:</strong> {{ app.course_name }}</p>
+        <p><strong>Курс:</strong> {{ app.get_course_name_display }}</p>
         <p><strong>Дата начала:</strong> {{ app.start_date }}</p>
         <p><strong>Оплата:</strong> {{ app.get_payment_method_display }}</p>
         <p><strong>Статус:</strong> {{ app.get_status_display }}</p>
