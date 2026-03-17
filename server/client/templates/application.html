@@ -1,0 +1,32 @@
+{% extends './base.html' %}
+{% block title %} Мои заявки {% endblock %}
+
+{% block content %}
+<h2 class="page-title text-center">Мои заявки</h2>
+
+<div class="container">
+    {% for req in requests %}
+    <div class="card-custom mb-3">
+        <p><strong>Курс:</strong> {{ req.course_name }}</p>
+        <p><strong>Дата начала:</strong> {{ req.start_date }}</p>
+        <p><strong>Способ оплаты:</strong> {{ req.get_payment_method_display }}</p>
+        <p><strong>Статус:</strong> {{ req.get_status_display }}</p>
+
+        {% if req.status == 'completed' %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="request_id" value="{{ req.id }}">
+                <textarea name="feedback" class="form-control mb-2" rows="3" placeholder="Ваш отзыв">{{ req.feedback }}</textarea>
+                <button type="submit" class="btn btn-primary btn-sm">Отправить отзыв</button>
+            </form>
+        {% elif req.feedback %}
+            <p><strong>Отзыв:</strong> {{ req.feedback }}</p>
+        {% else %}
+            <p><em>Оставить отзыв можно после завершения обучения</em></p>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p>Вы ещё не оставляли заявки.</p>
+    {% endfor %}
+</div>
+{% endblock %}

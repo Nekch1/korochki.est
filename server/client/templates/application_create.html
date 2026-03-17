@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %} Подача заявок {% endblock %}
+
+{% block content %}
+<div class="card-custom">
+    <h2 class="page-title">Формирование заявки</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label>Наименование курса</label>
+            {{ form.course_name }}
+            {{ form.course_name.errors }}
+        </div>
+
+        <div class="mb-3">
+            <label>Дата начала</label>
+            {{ form.start_date }}
+            {{ form.start_date.errors }}
+        </div>
+
+        <div class="mb-3">
+            <label>Способ оплаты</label>
+            {{ form.payment_method }}
+            {{ form.payment_method.errors }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+            Отправить
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser
+from .models import CustomUser, Application
 import re
+from datetime import date
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(
@@ -62,3 +63,39 @@ class LoginForm(AuthenticationForm):
         label='Пароль',
         widget=forms.PasswordInput(attrs={})
     )
+
+
+class ApplicationCreateForm(forms.ModelForm):
+    start_date = forms.DateField(
+        label='Дата начала',
+        widget=forms.DateInput(attrs={'type': 'date' })
+    )
+
+    class Meta:
+        model = Application
+        fields = ('course_name', 'start_date', 'payment_method')
+        widgets = {
+            'course_name': forms.TextInput(),
+            'payment_method': forms.Select(),
+        }
+
+    def clean_start_date(self):
+        start_date = self.cleaned_data.get('start_date')
+        if start_date < date.today():
+            raise forms.ValidationError('Дата начала не может быть в прошлом')
+        return start_date
+    
+
+class RewiewForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ('rewiew',)
+        widgets = {
+            'rewiew': forms.Textarea(attrs={'rows': 3}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.instance.status != 'completed':
+            raise forms.ValidationError('Отзыв можно оставить только после завершения обучения')
+        return cleaned_data
