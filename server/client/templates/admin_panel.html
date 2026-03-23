@@ -2,73 +2,108 @@
 {% block title %}Панель администратора{% endblock %}
 
 {% block content %}
-<h2 class="page-title text-center">Все заявки пользователей</h2>
 
 <div class="container">
 
-    <!-- Фильтр по статусу -->
-    <form method="get" class="mb-3 d-flex gap-2">
-        <select name="status" class="form-control w-auto">
+    <!-- Фильтр -->
+    <form method="get" class="filter-form">
+        <select name="status">
             <option value="">Все статусы</option>
             {% for key, label in status_choices %}
-                <option value="{{ key }}" {% if status_filter == key %}selected{% endif %}>{{ label }}</option>
+                <option value="{{ key }}" {% if status_filter == key %}selected{% endif %}>
+                    {{ label }}
+                </option>
             {% endfor %}
         </select>
-        <button type="submit" class="btn btn-primary">Фильтровать</button>
+        <button type="submit">Фильтровать</button>
     </form>
 
-    <!-- Список заявок -->
     {% for app in page_obj %}
-    <div class="card-custom mb-3">
-        <p><strong>Пользователь:</strong> {{ app.user.username }}</p>
-        <p><strong>Курс:</strong> {{ app.course_name }}</p>
-        <p><strong>Дата начала:</strong> {{ app.start_date }}</p>
-        <p><strong>Оплата:</strong> {{ app.get_payment_method_display }}</p>
-        <p><strong>Статус:</strong> {{ app.get_status_display }}</p>
+    <div class="app-card">
 
-        <!-- Форма смены статуса -->
-        <form method="post" action="{% url 'change_status' app.id %}" class="d-flex gap-2 mt-2">
-            {% csrf_token %}
-            <select name="status" class="form-control w-auto">
-                {% for key, label in status_choices %}
-                    <option value="{{ key }}" {% if app.status == key %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit" class="btn btn-primary btn-sm">Обновить статус</button>
-        </form>
+        <!-- HEADER -->
+        <div class="app-card__header">
+            <h3 class="app-card__title">{{ app.get_course_name_display }}</h3>
+            <span class="app-card__status">{{ app.get_status_display }}</span>
+        </div>
+
+        <!-- BODY -->
+        <div class="app-card__body">
+            <div class="app-card__row">
+                <span>Пользователь</span>
+                <strong>{{ app.user.username }}</strong>
+            </div>
+            <div class="app-card__row">
+                <span>Дата начала</span>
+                <strong>{{ app.start_date }}</strong>
+            </div>
+            <div class="app-card__row">
+                <span>Оплата</span>
+                <strong>{{ app.get_payment_method_display }}</strong>
+            </div>
+        </div>
+
+        <!-- REVIEW -->
+        {% if app.rewiew %}
+        <div class="app-card__review">
+            <strong>Отзыв:</strong>
+            <p>{{ app.rewiew }}</p>
+        </div>
+        {% endif %}
+
+        <!-- FOOTER -->
+        <div class="app-card__footer">
+            <form method="post" action="{% url 'change_status' app.id %}" class="status-form">
+                {% csrf_token %}
+
+                <select name="status">
+                    {% for key, label in status_choices %}
+                        <option value="{{ key }}" {% if app.status == key %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit">Обновить статус</button>
+            </form>
+        </div>
+
     </div>
     {% empty %}
         <p>Заявок нет.</p>
     {% endfor %}
+    <div class="pagination">
 
-    <!-- Пагинация -->
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&status={{ status_filter }}">Назад</a>
-            </li>
+        {% if page_obj.has_previous %}
+            <span class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}">
+                    Назад
+                </a>
+            </span>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </span>
             {% else %}
-            <li class="page-item disabled"><span class="page-link">Назад</span></li>
+                <span class="page-item">
+                    <a class="page-link" href="?page={{ num }}{% if status_filter %}&status={{ status_filter }}{% endif %}">
+                        {{ num }}
+                    </a>
+                </span>
             {% endif %}
+        {% endfor %}
 
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <li class="page-item"><a class="page-link" href="?page={{ num }}&status={{ status_filter }}">{{ num }}</a></li>
-                {% endif %}
-            {% endfor %}
+        {% if page_obj.has_next %}
+            <span class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}">
+                    Вперед
+                </a>
+            </span>
+        {% endif %}
 
-            {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}&status={{ status_filter }}">Вперед</a>
-            </li>
-            {% else %}
-            <li class="page-item disabled"><span class="page-link">Вперед</span></li>
-            {% endif %}
-        </ul>
-    </nav>
-
-</div> 
+    </div>
+</div>
 {% endblock %}

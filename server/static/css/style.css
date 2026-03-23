@@ -1,9 +1,6 @@
-/* =========================
-   🎯 Переменные (дизайн-система)
-========================= */
 :root {
-    --color-primary: #4f46e5;       /* основной фирменный цвет */
-    --color-primary-hover: #4338ca; /* hover для ВСЕХ кнопок */
+    --color-primary: #4f46e5;       
+    --color-primary-hover: #4338ca; 
     --color-bg: #f4f6fb;
     --color-white: #ffffff;
     --color-text: #1f2937;
@@ -14,9 +11,6 @@
     --transition: 0.2s ease;
 }
 
-/* =========================
-   🌍 База
-========================= */
 body {
     background-color: var(--color-bg);
     font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -30,9 +24,6 @@ body {
     padding: 0 15px;
 }
 
-/* =========================
-   🔝 Header
-========================= */
 .header {
     background: var(--color-white);
     border-bottom: 1px solid var(--color-border);
@@ -45,16 +36,10 @@ body {
     align-items: center;
 }
 
-.logo {
-    font-size: 22px;
-    font-weight: bold;
-    text-decoration: none;
-    color: var(--color-primary);
+.logo img {
+    width: 75px;
 }
 
-/* =========================
-   🔗 Навигация
-========================= */
 .nav-right {
     display: flex;
     align-items: center;
@@ -75,9 +60,6 @@ body {
     color: var(--color-primary);
 }
 
-/* =========================
-   🔘 КНОПКИ (единый стиль!)
-========================= */
 .btn {
     border-radius: var(--radius);
     padding: 8px 16px;
@@ -87,28 +69,39 @@ body {
     cursor: pointer;
 }
 
-/* Основная кнопка */
+.btn-exit{
+    border-radius: var(--radius);
+    padding: 8px 16px;
+    font-weight: 500;
+    border: none;
+    transition: var(--transition);
+    text-decoration: none;
+    color: #fa2a2a;
+}
+
 .btn-primary {
     color: var(--color-primary);
     background: transparent;
     border: 1px solid var(--color-primary);
 }
 
-/* ❗ ЕДИНЫЙ hover для ВСЕХ кнопок */
 .btn:hover {
     background: var(--color-primary-hover);
     color: #fff;
     border-color: var(--color-primary-hover);
 }
 
-/* =========================
-   📦 Контент
-========================= */
-.main {
-    margin-top: 40px;
+.btn-exit:hover {
+    background: #ff1f1f17;
+    color: #ff0000;
+    border-color: var(--color-primary-hover);
 }
 
-/* Карточка */
+.main {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
 .card-custom {
     background: var(--color-white);
     padding: 30px;
@@ -116,16 +109,12 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-/* Заголовки */
 .page-title {
     margin-bottom: 20px;
     font-size: 26px;
     font-weight: 600;
 }
 
-/* =========================
-   📝 Формы
-========================= */
 label {
     display: block;
     margin-bottom: 5px;
@@ -140,16 +129,12 @@ input, textarea, select {
     transition: var(--transition);
 }
 
-/* Фокус */
 input:focus, textarea:focus {
     border-color: var(--color-primary);
     outline: none;
     box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
 }
 
-/* =========================
-   ⚠ Ошибки
-========================= */
 .errorlist {
     color: red;
     margin: 5px 0;
@@ -173,6 +158,19 @@ input:focus, textarea:focus {
     opacity: 0.7;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.page-link {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+}
+
 .pagination .page-link {
     color: var(--color-primary);
 }
@@ -181,4 +179,176 @@ input:focus, textarea:focus {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
     color: #fff;
+}
+
+/* Сетка карточек */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+/* Карточка заявок с flex для контента и статуса */
+.card-grid-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content p {
+    margin: 5px 0;
+}
+
+/* Форма статуса справа */
+.status-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+/* Фильтр */
+.filter-form {
+    display: flex;
+    justify-content: right;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+
+.applications {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.app-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* HEADER */
+.app-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.app-card__title {
+    margin: 0;
+    font-size: 18px;
+}
+
+.app-card__status {
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: #eef2ff;
+}
+
+/* BODY */
+.app-card__body {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.app-card__row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #444;
+}
+
+/* FOOTER */
+.app-card__footer {
+    margin-top: 10px;
+}
+
+/* REVIEW */
+.review-form textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+    margin-bottom: 8px;
+}
+
+.review-form button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #4f46e5;
+    color: white;
+    cursor: pointer;
+}
+
+.review-form button:hover {
+    background: #4338ca;
+}
+
+.app-card__review {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.app-card__hint {
+    font-size: 13px;
+    color: #888;
+}
+
+
+/* FILTER */
+.filter-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-form select,
+.filter-form button {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.filter-form button {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* STATUS FORM */
+.status-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.status-form select {
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.status-form button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #10b981;
+    color: white;
+    cursor: pointer;
+}
+
+.status-form button:hover {
+    background: #059669;
 }

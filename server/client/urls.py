@@ -10,4 +10,7 @@ urlpatterns = [
     path('application/', views.application, name='application'),
     path('admin-panel/', views.admin_panel, name='admin_panel'),
     path('admin-panel/change-status/<int:app_id>/', views.change_status, name='change_status'),
+    
+    path('robots.txt/', views.robots_txt, name='robots_txt'),
+    path('sitemap.xml/', views.sitemap_xml, name='sitemap_xml'),
 ]

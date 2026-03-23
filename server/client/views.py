@@ -14,7 +14,7 @@ def register_page(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('login')
     else:
         form = RegisterForm()
 
@@ -60,16 +60,13 @@ def application(request):
     if request.method == 'POST':
         app_id = request.POST.get('app_id')
         course_app = get_object_or_404(Application, id=app_id, user=request.user)
-        form = RewiewForm(request.POST, instance=course_app)
-        if form.is_valid():
-            form.save()
-            return redirect('application')
-    else:
-        form = None
+        course_app.rewiew = request.POST.get('rewiew', '')
+        if course_app.status == 'completed': 
+            course_app.save()
+        return redirect('application')
 
     return render(request, 'application.html', {
         'applications': user_app,
-        'form': form
     })
 
 
@@ -78,15 +75,13 @@ def admin_panel(request):
     if not request.user.is_superuser:
         return redirect('home') 
 
-    # Фильтрация по статусу через GET-параметр
     status_filter = request.GET.get('status', '')
     if status_filter:
         applications = Application.objects.filter(status=status_filter).order_by('-created_at')
     else:
         applications = Application.objects.all().order_by('-created_at')
 
-    # Пагинация
-    paginator = Paginator(applications, 10)  # 10 заявок на страницу
+    paginator = Paginator(applications, 5) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -110,3 +105,10 @@ def change_status(request, app_id):
             app.save()
 
     return redirect('admin_panel')
+
+
+def robots_txt(request):
+    return render(request, 'robots.txt', content_type="text/plain")
+
+def sitemap_xml(request):
+    return render(request, 'sitemap.xml', content_type="application/xml")

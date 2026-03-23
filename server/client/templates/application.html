@@ -6,24 +6,48 @@
 
 <div class="container">
     {% for app in applications %}
-    <div class="card-custom mb-3">
-        <p><strong>Курс:</strong> {{ app.get_course_name_display }}</p>
-        <p><strong>Дата начала:</strong> {{ app.start_date }}</p>
-        <p><strong>Способ оплаты:</strong> {{ app.get_payment_method_display }}</p>
-        <p><strong>Статус:</strong> {{ app.get_status_display }}</p>
+    <div class="app-card">
+        
+        <div class="app-card__header">
+            <h3 class="app-card__title">{{ app.get_course_name_display }}</h3>
+            <span class="app-card__status">{{ app.get_status_display }}</span>
+        </div>
 
-        {% if app.status == 'completed' %}
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="request_id" value="{{ app.id }}">
-                {{ form.as_p }} 
-                <button type="submit" class="btn btn-primary btn-sm">Отправить отзыв</button>
-            </form>
-        {% elif app.rewiew %}
-            <p><strong>Отзыв:</strong> {{ app.rewiew }}</p>
-        {% else %}
-            <p><em>Оставить отзыв можно после завершения обучения</em></p>
-        {% endif %}
+        <div class="app-card__body">
+            <div class="app-card__row">
+                <span>Дата начала</span>
+                <strong>{{ app.start_date }}</strong>
+            </div>
+            <div class="app-card__row">
+                <span>Оплата</span>
+                <strong>{{ app.get_payment_method_display }}</strong>
+            </div>
+        </div>
+
+        <div class="app-card__footer">
+            {% if app.status == 'completed' %}
+                <form method="post" class="review-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="app_id" value="{{ app.id }}">
+                    
+                    <textarea name="rewiew" rows="3" placeholder="Ваш отзыв">{{ app.rewiew }}</textarea>
+                    
+                    <button type="submit">Отправить</button>
+                </form>
+
+                {% if app.rewiew %}
+                    <div class="app-card__review">
+                        <strong>Ваш отзыв:</strong>
+                        <p>{{ app.rewiew }}</p>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="app-card__hint">
+                    Оставить отзыв можно после завершения обучения
+                </p>
+            {% endif %}
+        </div>
+
     </div>
     {% empty %}
     <p>Вы ещё не оставляли заявки.</p>
